@@ -52,6 +52,3 @@ User Interaction
 1.	PHP
 2.	SMS Gateway
 In this module, whenever a user makes a missed call to a predefined number, a SMS containing the prediction for the next x hrs will be delivered. SMS was available in regional languages as well. Once a call is made, the arduino hangs up the call and GSM Module will connect to web server and the caller id will be delivered to the web server through a GET request. Once the server receives the caller id, it is logged to database. We have used SMS Gateway APIs to deliver the SMS to this caller id. Prediction that is already stored in the DB will be extracted and it will be send to the caller in regional language.
- 
- 
-
