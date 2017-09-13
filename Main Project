@@ -1,0 +1,57 @@
+Weather Forecasting Using Data Mining
+
+Data mining is the computer assisted process of digging through and analysing enormous sets of data and then extracting the meaningful data. Weather forecasting is the application of science and technology to predict the state of the atmosphere for a given location.  Predicting the weather is essential to help preparing for the best and the worst of the climate. Accurate Weather Prediction has been one of the most challenging problems around the world. Many weather predictions like rainfall prediction, thunderstorm prediction, predicting cloud conditions are major challenges for atmospheric research. Ancient weather forecasting methods usually relied on observed patterns of events, also termed pattern recognition. It can answer questions that traditionally were very time consuming to resolve. For example, it might be observed that if the sunset was particularly red, the following day often brought fair weather. However, not all of these predictions prove reliable. Here this system will predict weather based on parameters such as temperature, humidity and wind. Sensors take value of that particular place and give it to the system, the system analyses the values. When the farmer gives a missed call, he will get the weather report of that particular place. This is free of cost. This also helps uneducated farmers to get the result without any app.
+
+
+Three Parts of the project
+Data Collection & Storage
+1.	Reading values from the sensors and uploading it to the server.
+2.	Values consist of temperature, humidity, wind, rainfall and sunlight.
+
+
+Analysis
+
+1.	Compares the values of every day.
+2.	Predicts the final report for each day.
+
+Reports (user interaction)
+
+1.	Takes the input from the client i.e. in missed call.
+2.	Gives output to the client i.e. in a text message.
+
+
+ 
+
+
+Detailed Description 
+Data Collection & Storage
+•	Hardware
+1.	BMP180 pressure sensor
+2.	DHT11 Temperature sensor
+3.	Arduino Uno
+4.	enc28j60 Ethernet Shield for arduino
+•	Software
+1.	Apache Web server
+2.	Mysql
+3.	Php
+In this module, we use sensors to collect three weather parameters such as temperature, pressure and humidity. The values are read using sensors periodically (every 10 sec) and are read with the help of arduino. Arduino is web enabled using Ethernet shield. Whenever sensor values are read, arduino connects to the web server and data is send to database. We give a GET request to a php page in the web server which then inserts the data into DB.
+
+Data Analysis
+•	Software
+1.	Python 
+2.	Scikit learn library for python
+In this module, data from the database is extracted periodically. We will be extracting highest and lowest value of each parameter in each hour for the last 24 hrs or last 48 hrs data (from data stored each 10 seconds for the last x hrs). This data is extracted using python pandas data frame. Then this data is stored to  numpy array functions. We used linear regression (from sklearn library) to predict the data for the next x hrs based on the available x hrs data. We kept time as one variable and other three parameters as the second variable. Based on the available training data, model was trained and the parametric values (temp,hum,press) for the next x hrs are predicted. So we are having a set of values for lowest temp, highest temp, lowest hum, highest hum, lowest press, highest press. Now we consider the mean values.
+[Say we are extracting data from db for the past 24 hrs. We will be using this data to predict next 6/12 hrs condition.  Since we are extracting only highest and lowest of each parameter per hour, we will be having 2*3*24 where, 2 stands for lowest and highest, 3 for temp,press,hum, and 24 means the past 24 hrs. So for the past 24 hrs we will be having 144 values. We will use these 144 values to train our model and to predict the values for next 6 hrs. Then we will obtain 36 values for the next 6 hrs. We will consider the mean of each parameter for the 6 hrs. So finally we will obtain single value per parameter. Ie, the mean value. ]
+Now we will use this so obtained mean value for x hrs to find the final weather condition. We make use of decision tree for this we have already trained a set of values for the decision tree. So we will be obtaining a single final prediction. This predicition will be saved to database.
+(Accuracy of the model can be increased by increasing the no. of parameters and the amount of data used to train each model)
+User Interaction
+•	Hardware
+1.	Arduino Uno
+2.	GSM Module
+•	Software
+1.	PHP
+2.	SMS Gateway
+In this module, whenever a user makes a missed call to a predefined number, a SMS containing the prediction for the next x hrs will be delivered. SMS was available in regional languages as well. Once a call is made, the arduino hangs up the call and GSM Module will connect to web server and the caller id will be delivered to the web server through a GET request. Once the server receives the caller id, it is logged to database. We have used SMS Gateway APIs to deliver the SMS to this caller id. Prediction that is already stored in the DB will be extracted and it will be send to the caller in regional language.
+ 
+ 
+
